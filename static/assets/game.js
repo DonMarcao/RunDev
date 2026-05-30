@@ -53,7 +53,7 @@ gameScene.create = function() {
 
     // Player image (created last — renders on top)
     this.player = this.add.image(80, 270, 'player');
-    this.player.setScale(0.5);
+    this.player.setScale(0.05);
 
     // Keyboard input
     this.cursors = this.input.keyboard.createCursorKeys();
