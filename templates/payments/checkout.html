@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Upgrade to Premium{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+        <h2>Upgrade to Premium</h2>
+        <p class="lead">Unlock all 4 worlds, leaderboard and premium characters.</p>
+        <ul class="list-unstyled my-4">
+            <li>✅ Web Ocean — Level 1 (free)</li>
+            <li>🔒 Code Space — Level 2</li>
+            <li>🔒 Binary Matrix — Level 3</li>
+            <li>🔒 Cloud City — Level 4</li>
+            <li>🔒 Hall of Senior Devs — Leaderboard</li>
+        </ul>
+        <p class="h4">£4.99 one-time payment</p>
+        <form method="POST" class="mt-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-lg">Unlock Premium — £4.99</button>
+        </form>
+        <a href="/game/" class="btn btn-link mt-2">Back to game</a>
+    </div>
+</div>
+{% endblock %}

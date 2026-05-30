@@ -7,4 +7,5 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('game/', include('game.urls')),
     path('', game_views.home_view, name='home'),
+    path('payments/', include('payments.urls')),
 ]
