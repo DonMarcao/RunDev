@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Play{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div style="position: relative; width: 960px; height: 540px;">
+        <img src="{% static 'assets/background/ocean_loop.gif' %}"
+             style="position: absolute; top: 0; left: 0; width: 960px; height: 540px; z-index: 0;">
+        <div id="game-container"
+             style="position: absolute; top: 0; left: 0; z-index: 1;">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/phaser@4/dist/phaser.js"></script>
+<script>
+    const PLAYER_SPRITE = "{% static 'assets/player2.png' %}";
+</script>
+<script src="{% static 'assets/game.js' %}"></script>
+{% endblock %}
