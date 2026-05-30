@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Hall of Senior Devs{% endblock %}
+{% block content %}
+<h2 class="mb-4">🏆 Hall of Senior Devs</h2>
+{% if scores %}
+<table class="table table-dark table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Dev</th>
+            <th>World</th>
+            <th>Score</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for score in scores %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ score.user.username }}</td>
+            <td>{{ score.get_world_display }}</td>
+            <td>{{ score.score }}</td>
+            <td>{{ score.time_seconds }}s</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No scores yet — be the first to complete a world!</p>
+{% endif %}
+{% endblock %}
