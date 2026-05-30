@@ -23,6 +23,13 @@ gameScene.create = function() {
     // Store premium status
     this.isPremium = IS_PREMIUM;
 
+    // Timer
+    this.elapsedTime = 0;
+    this.timerText = this.add.text(480, 20, 'Time: 0s', {
+        fontSize: '20px',
+        fill: '#ffffff'
+    }).setOrigin(0.5);
+
     // Create obstacles — one per lane, moving up/down
     this.obstacles = [];
 
@@ -77,7 +84,7 @@ gameScene.create = function() {
 };
 
 // Runs ~60 times per second — game logic goes here
-gameScene.update = function() {
+gameScene.update = function(time, delta) {
 
     if (this.isGameOver) return;
 
@@ -118,6 +125,10 @@ gameScene.update = function() {
         if (obs.y > 520) obs.direction = -1;
         if (obs.y < 20) obs.direction = 1;
     }
+
+    // Update timer
+    this.elapsedTime += delta / 1000; // 60fps
+    this.timerText.setText('Time: ' + Math.floor(this.elapsedTime) + 's');
 
     // =============================================
     // COLLISION DETECTION
@@ -184,10 +195,10 @@ gameScene.levelComplete = function() {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCookie('csrftoken')
         },
-        body: JSON.stringify({
-            world: 'ocean',
-            score: this.score || 100,
-            time_seconds: this.elapsedTime || 0
+       body: JSON.stringify({
+           world: 'ocean',
+           score: 100,
+           time_seconds: Math.floor(this.elapsedTime)
         })
     });
 
