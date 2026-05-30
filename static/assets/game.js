@@ -177,6 +177,20 @@ gameScene.levelComplete = function() {
     this.isGameOver = true;
     this.player.setTint(0xffdd00);
 
+    // Submit score to Django
+    fetch('/game/submit-score/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            world: 'ocean',
+            score: this.score || 100,
+            time_seconds: this.elapsedTime || 0
+        })
+    });
+
     this.add.text(480, 220, 'LEVEL COMPLETE!', {
         fontSize: '64px',
         fill: '#ffdd00',
@@ -197,6 +211,22 @@ gameScene.levelComplete = function() {
 // =============================================
 // GAME CONFIGURATION
 // =============================================
+
+// Helper to get CSRF token from cookie
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
 let config = {
     type: Phaser.AUTO,
