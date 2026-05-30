@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="text-center py-5">
+    <h1>RunDev</h1>
+    <p class="lead">Survive the dev stack. Dodge the bugs.</p>
+    {% if user.is_authenticated %}
+        <a href="/game/" class="btn btn-primary btn-lg">Play Now</a>
+    {% else %}
+        <a href="/accounts/register/" class="btn btn-primary btn-lg me-2">Get Started</a>
+        <a href="/accounts/login/" class="btn btn-outline-secondary btn-lg">Login</a>
+    {% endif %}
+</div>
+{% endblock %}
