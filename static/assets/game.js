@@ -7,6 +7,8 @@ let gameScene = new Phaser.Scene('GameScene');
 // Runs once — load assets here
 gameScene.preload = function() {
     this.load.image('player', PLAYER_SPRITE);
+    this.load.image('obs_404', OBS_404);
+    this.load.image('obs_anchor', OBS_ANCHOR);
 };
 
 // Runs once after preload — create game objects here
@@ -32,15 +34,17 @@ gameScene.create = function() {
 
     for (let i = 0; i < this.lanePositions.length; i++) {
         let startY = Phaser.Math.Between(50, 490);
-        let speed = Phaser.Math.Between(2, 5);
+        let speed = Phaser.Math.Between(1, 3);
         let direction = i % 2 === 0 ? 1 : -1; // alternate up/down
+        let obsKey = i % 2 === 0 ? 'obs_404' : 'obs_anchor';
 
-        let obs = this.add.rectangle(
+        let obs = this.add.image(
             this.lanePositions[i],
             startY,
-            48, 48,
-            0xff0000
+             obsKey
         );
+        obs.setScale(0.04);
+
 
         obs.speed = speed;
         obs.direction = direction;
@@ -64,7 +68,7 @@ gameScene.create = function() {
     this.canvasBottom = 520;
 
     // Finish line
-    this.finishLine = this.add.rectangle(900, 270, 4, 540, 0xffdd00);
+    this.finishLine = this.add.rectangle(920, 270, 4, 540, 0xffdd00);
 
     // Game state
     this.isGameOver = false;
