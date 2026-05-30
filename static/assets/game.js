@@ -134,7 +134,7 @@ gameScene.update = function(time, delta) {
     // WIN CONDITION
     // =============================================
 
-    if (this.player.x >= this.canvasRight) {
+    if (this.player.x >= 880) {
         this.levelComplete();
     }
 
