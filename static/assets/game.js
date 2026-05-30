@@ -20,6 +20,9 @@ gameScene.create = function() {
     // 8 lanes evenly spaced between
     this.lanePositions = [200, 280, 360, 440, 520, 600, 680, 760];
 
+    // Store premium status
+    this.isPremium = IS_PREMIUM;
+
     // Create obstacles — one per lane, moving up/down
     this.obstacles = [];
 
