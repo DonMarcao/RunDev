@@ -38,9 +38,9 @@ def checkout_view(request):
 def success_view(request):
     profile, _ = UserProfile.objects.get_or_create(user=request.user)
     profile.is_premium = True
+    profile.worlds_unlocked = 2  # Premium unlocks world 2 immediately
     profile.save()
     return render(request, 'payments/success.html')
-
 
 @login_required
 def cancel_view(request):

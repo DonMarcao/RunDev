@@ -10,11 +10,18 @@
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="/">RunDev</a>
-            <div>
+            <div class="d-flex gap-2">
                 {% if user.is_authenticated %}
+                    <a href="/game/" class="btn btn-outline-light btn-sm">Play</a>
+                    <a href="/store/" class="btn btn-outline-light btn-sm">Store</a>
+                    {% if user.userprofile.is_premium %}
+                        <a href="/leaderboard/" class="btn btn-outline-warning btn-sm">🏆 Leaderboard</a>
+                    {% else %}
+                        <a href="/payments/checkout/" class="btn btn-warning btn-sm">Unlock Premium</a>
+                    {% endif %}
                     <a href="/accounts/logout/" class="btn btn-outline-light btn-sm">Logout</a>
                 {% else %}
-                    <a href="/accounts/login/" class="btn btn-outline-light btn-sm me-2">Login</a>
+                    <a href="/accounts/login/" class="btn btn-outline-light btn-sm">Login</a>
                     <a href="/accounts/register/" class="btn btn-light btn-sm">Register</a>
                 {% endif %}
             </div>
