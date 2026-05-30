@@ -195,11 +195,18 @@ gameScene.levelComplete = function() {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCookie('csrftoken')
         },
-       body: JSON.stringify({
-           world: 'ocean',
-           score: 100,
-           time_seconds: Math.floor(this.elapsedTime)
+        body: JSON.stringify({
+            world: 'ocean',
+            score: 100,
+            time_seconds: Math.floor(this.elapsedTime)
         })
+    }).then(() => {
+        // Redirect free users to showroom
+        if (!IS_PREMIUM) {
+            setTimeout(() => {
+                window.location.href = '/game/showroom/';
+            }, 2000);
+        }
     });
 
     this.add.text(480, 220, 'LEVEL COMPLETE!', {
@@ -208,14 +215,16 @@ gameScene.levelComplete = function() {
         fontStyle: 'bold'
     }).setOrigin(0.5);
 
-    this.add.text(480, 320, 'Press SPACE to restart', {
+    this.add.text(480, 320, !IS_PREMIUM ? 'Redirecting...' : 'Press SPACE to restart', {
         fontSize: '24px',
         fill: '#ffffff'
     }).setOrigin(0.5);
 
-    this.input.keyboard.once('keydown-SPACE', function() {
-        this.scene.restart();
-    }, this);
+    if (IS_PREMIUM) {
+        this.input.keyboard.once('keydown-SPACE', function() {
+            this.scene.restart();
+        }, this);
+    }
 
 };
 
