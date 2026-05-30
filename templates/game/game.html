@@ -17,7 +17,7 @@
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/phaser@4/dist/phaser.js"></script>
 <script>
-    const PLAYER_SPRITE = "{% static 'assets/player2.png' %}";
+    const PLAYER_SPRITE = "{% static 'assets/devs/ocean_player.png' %}";
     const IS_PREMIUM = {{ is_premium|yesno:"true,false" }};
     const USERNAME = "{{ username }}";
 </script>

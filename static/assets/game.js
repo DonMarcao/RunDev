@@ -6,10 +6,7 @@ let gameScene = new Phaser.Scene('GameScene');
 
 // Runs once — load assets here
 gameScene.preload = function() {
-    this.load.spritesheet('player', PLAYER_SPRITE, {
-        frameWidth: 84,
-        frameHeight: 123
-    });
+    this.load.image('player', PLAYER_SPRITE);
 };
 
 // Runs once after preload — create game objects here
@@ -18,7 +15,7 @@ gameScene.create = function() {
     // Invisible vertical lanes — X positions across the screen
     // Player starts at x=80, finish line at x=880
     // 8 lanes evenly spaced between
-    this.lanePositions = [200, 280, 360, 440, 520, 600, 680, 760];
+    this.lanePositions = [180, 280, 380, 480, 580, 680, 780, 880];
 
     // Store premium status
     this.isPremium = IS_PREMIUM;
@@ -41,7 +38,7 @@ gameScene.create = function() {
         let obs = this.add.rectangle(
             this.lanePositions[i],
             startY,
-            28, 48,
+            48, 48,
             0xff0000
         );
 
@@ -50,28 +47,19 @@ gameScene.create = function() {
         this.obstacles.push(obs);
     }
 
-    // Player sprite (created last — renders on top)
-    this.player = this.add.sprite(80, 270, 'player');
-    this.player.setFrame(0);
-    this.player.setScale(0.35);
-
-    // Walk animations
-    this.anims.create({
-        key: 'walk-right',
-        frames: this.anims.generateFrameNumbers('player', { start: 0, end: 1 }),
-        frameRate: 6,
-        repeat: 0
-    });
+    // Player image (created last — renders on top)
+    this.player = this.add.image(80, 270, 'player');
+    this.player.setScale(0.12);
 
     // Keyboard input
     this.cursors = this.input.keyboard.createCursorKeys();
 
     // Step size
-    this.stepSize = 80;
+    this.stepSize = 100;
 
     // Canvas boundaries
     this.canvasLeft = 80;
-    this.canvasRight = 880;
+    this.canvasRight = 900;
     this.canvasTop = 20;
     this.canvasBottom = 520;
 
@@ -92,7 +80,6 @@ gameScene.update = function(time, delta) {
     if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
         if (this.player.x + this.stepSize <= this.canvasRight) {
             this.player.x += this.stepSize;
-            this.player.play('walk-right');
         }
     }
 
@@ -127,7 +114,7 @@ gameScene.update = function(time, delta) {
     }
 
     // Update timer
-    this.elapsedTime += delta / 1000; // 60fps
+    this.elapsedTime += delta / 1000;
     this.timerText.setText('Time: ' + Math.floor(this.elapsedTime) + 's');
 
     // =============================================
@@ -229,10 +216,10 @@ gameScene.levelComplete = function() {
 };
 
 // =============================================
-// GAME CONFIGURATION
+// HELPERS
 // =============================================
 
-// Helper to get CSRF token from cookie
+// Get CSRF token from cookie
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -247,6 +234,10 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+// =============================================
+// GAME CONFIGURATION
+// =============================================
 
 let config = {
     type: Phaser.AUTO,
