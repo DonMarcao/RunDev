@@ -9,4 +9,5 @@ urlpatterns = [
     path('payments/', include('payments.urls')),
     path('leaderboard/', include('leaderboard.urls')),
     path('', game_views.home_view, name='home'),
+    path('store/', include('store.urls')),
 ]

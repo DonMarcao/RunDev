@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Character Store{% endblock %}
+{% block content %}
+<h2 class="mb-4">Choose Your Developer</h2>
+{% if characters %}
+<div class="row">
+    {% for character in characters %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            {% if character.image %}
+            <img src="{{ character.image.url }}" class="card-img-top" alt="{{ character.name }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ character.name }}</h5>
+                <p class="card-text">{{ character.description }}</p>
+                <p class="card-text"><strong>World: {{ character.get_world_display }}</strong></p>
+                <p class="card-text">£{{ character.price }}</p>
+                <a href="/payments/checkout/" class="btn btn-primary">Unlock Premium</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No characters available yet.</p>
+{% endif %}
+{% endblock %}
