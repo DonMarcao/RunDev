@@ -14,6 +14,7 @@ class Score(models.Model):
     world = models.CharField(max_length=20, choices=WORLD_CHOICES)
     score = models.IntegerField()
     time_seconds = models.IntegerField()
+    label = models.CharField(max_length=50, blank=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
