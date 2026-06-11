@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}Hall of Senior Devs{% endblock %}
 {% block content %}
+
 <h2 class="mb-4">🏆 Hall of Senior Devs</h2>
+
+<!-- Global leaderboard -->
 {% if scores %}
-<table class="table table-dark table-striped">
+<table class="table table-dark table-striped mb-5">
     <thead>
         <tr>
             <th>#</th>
@@ -11,6 +14,7 @@
             <th>World</th>
             <th>Score</th>
             <th>Time</th>
+            <th>Label</th>
         </tr>
     </thead>
     <tbody>
@@ -21,11 +25,56 @@
             <td>{{ score.get_world_display }}</td>
             <td>{{ score.score }}</td>
             <td>{{ score.time_seconds }}s</td>
+            <td>{{ score.label }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 {% else %}
-<p>No scores yet — be the first to complete a world!</p>
+<p class="mb-5">No scores yet — be the first to complete a world!</p>
 {% endif %}
+
+<!-- Your scores with CRUD -->
+<h4 class="mb-3">Your Scores</h4>
+{% if user_scores %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>World</th>
+            <th>Score</th>
+            <th>Time</th>
+            <th>Label</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for score in user_scores %}
+        <tr>
+            <td>{{ score.get_world_display }}</td>
+            <td>{{ score.score }}</td>
+            <td>{{ score.time_seconds }}s</td>
+            <td>
+                <form method="POST" action="/leaderboard/update/{{ score.id }}/" class="d-flex gap-2">
+                    {% csrf_token %}
+                    <input type="text" name="label" value="{{ score.label }}"
+                           class="form-control form-control-sm" placeholder="Add label..."
+                           style="max-width: 150px;">
+                    <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
+                </form>
+            </td>
+            <td>
+                <form method="POST" action="/leaderboard/delete/{{ score.id }}/"
+                      onsubmit="return confirm('Delete this score?')">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>You have no scores yet — go play!</p>
+{% endif %}
+
 {% endblock %}
