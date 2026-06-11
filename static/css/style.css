@@ -1,0 +1,6 @@
+body {
+    background-image: url('../assets/ui/bg_main.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
