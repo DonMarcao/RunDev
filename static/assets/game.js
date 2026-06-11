@@ -1,4 +1,59 @@
 // =============================================
+// WORLD CONFIGURATION
+// =============================================
+
+const WORLD_CONFIG = {
+    ocean: {
+        playerKey: 'player_oc',
+        finishKey: 'finish_oc',
+        obsKeys: ['obs_oc_0', 'obs_oc_1', 'obs_oc_2', 'obs_oc_3', 'obs_oc_4', 'obs_oc_5', 'obs_oc_6', 'obs_oc_7'],
+        speedMin: 0.8,
+        speedMax: 2.0,
+        worldName: 'Web Ocean',
+        scoreKey: 'ocean',
+        obsScale: 0.05,
+        playerScale: 0.05,
+        finishScale: 0.08
+    },
+    cloud: {
+        playerKey: 'player_cc',
+        finishKey: 'finish_cc',
+        obsKeys: ['obs_cc_0', 'obs_cc_1', 'obs_cc_2', 'obs_cc_3', 'obs_cc_4', 'obs_cc_5', 'obs_cc_6', 'obs_cc_7'],
+        speedMin: 1.0,
+        speedMax: 2.5,
+        worldName: 'Cloud City',
+        scoreKey: 'cloud',
+        obsScale: 0.09,
+        playerScale: 0.09,
+        finishScale: 0.12
+    },
+    space: {
+        playerKey: 'player_cs',
+        finishKey: 'finish_cs',
+        obsKeys: ['obs_cs_0', 'obs_cs_1', 'obs_cs_2', 'obs_cs_3', 'obs_cs_4', 'obs_cs_5', 'obs_cs_6', 'obs_cs_7'],
+        speedMin: 1.3,
+        speedMax: 2.8,
+        worldName: 'Code Space',
+        scoreKey: 'space',
+        obsScale: 0.07,
+        playerScale: 0.07,
+        finishScale: 0.10
+    },
+    matrix: {
+        playerKey: 'player_bm',
+        finishKey: 'finish_bm',
+        obsKeys: ['obs_bm_0', 'obs_bm_1', 'obs_bm_2', 'obs_bm_3', 'obs_bm_4', 'obs_bm_5', 'obs_bm_6', 'obs_bm_7'],
+        speedMin: 1.6,
+        speedMax: 3.0,
+        worldName: 'Binary Matrix',
+        scoreKey: 'matrix',
+        obsScale: 0.07,
+        playerScale: 0.07,
+        finishScale: 0.10
+    }
+};
+
+// =============================================
 // GAME SCENE
 // =============================================
 
@@ -6,25 +61,29 @@ let gameScene = new Phaser.Scene('GameScene');
 
 // Runs once — load assets here
 gameScene.preload = function() {
-    this.load.image('player', PLAYER_SPRITE);
-    this.load.image('obs_404', OBS_404);
-    this.load.image('obs_anchor', OBS_ANCHOR);
-    this.load.image('obs_cookie', OBS_COOKIE);
-    this.load.image('obs_jellyfish', OBS_JELLYFISH);
-    this.load.image('obs_snail', OBS_SNAIL);
-    this.load.image('obs_virus', OBS_VIRUS);
-    this.load.image('obs_link', OBS_LINK);
-    this.load.image('obs_ladybug', OBS_LADYBUG);
-    this.load.image('finish', OBS_FINISH);
+
+    // Ocean assets
+    this.load.image('player_oc', PLAYER_OC);
+    this.load.image('finish_oc', FINISH_OC);
+    OBS_OC.forEach((url, i) => this.load.image('obs_oc_' + i, url));
+
+    // Cloud City assets
+    this.load.image('player_cc', PLAYER_CC);
+    this.load.image('finish_cc', FINISH_CC);
+    OBS_CC.forEach((url, i) => this.load.image('obs_cc_' + i, url));
+
 };
 
 // Runs once after preload — create game objects here
 gameScene.create = function() {
 
-    // Invisible vertical lanes — X positions across the screen
+    const config = WORLD_CONFIG[CURRENT_WORLD] || WORLD_CONFIG.ocean;
+
+    // Invisible vertical lanes
     this.lanePositions = [180, 280, 380, 480, 580, 680, 780, 880];
 
-    // Store premium status
+    // Store world config and premium status
+    this.worldConfig = config;
     this.isPremium = IS_PREMIUM;
 
     // Timer
@@ -34,42 +93,38 @@ gameScene.create = function() {
         fill: '#ffffff'
     }).setOrigin(0.5);
 
-    // Obstacle sprites per lane
-    const obsKeys = [
-        'obs_404', 'obs_anchor', 'obs_cookie', 'obs_jellyfish',
-        'obs_snail', 'obs_virus', 'obs_link', 'obs_ladybug'
-    ];
-
     // Create obstacles — 2 per lane, moving up/down
     this.obstacles = [];
 
     for (let i = 0; i < this.lanePositions.length; i++) {
-        let speed = (Phaser.Math.Between(5, 20)) / 10;
+        let speed = (Phaser.Math.Between(
+            Math.round(config.speedMin * 10),
+            Math.round(config.speedMax * 10)
+        )) / 10;
         let direction = i % 2 === 0 ? 1 : -1;
+        let obsKey = config.obsKeys[i % config.obsKeys.length];
 
         for (let j = 0; j < 2; j++) {
             let obs = this.add.image(
                 this.lanePositions[i],
                 (j * 220) + Phaser.Math.Between(50, 150),
-                obsKeys[i]
+                obsKey
             );
-            obs.setScale(0.05);
+            obs.setScale(config.obsScale);
             obs.speed = speed;
             obs.direction = direction;
             this.obstacles.push(obs);
         }
     }
 
-    // Finish line markers
-    this.add.image(910, 30, 'finish').setScale(0.08);
-    this.add.image(910, 510, 'finish').setScale(0.08);
+    // Finish line
+    this.add.image(910, 30, config.finishKey).setScale(config.finishScale);
+    this.add.image(910, 510, config.finishKey).setScale(config.finishScale);
+    this.add.rectangle(910, 270, 2, 440, 0xffdd00);
 
-    // Finish line — thin yellow line between markers
-    this.add.rectangle(910, 270, 2, 440, 0xffdd00);   
-
-    // Player image (created last — renders on top)
-    this.player = this.add.image(80, 270, 'player');
-    this.player.setScale(0.05);
+    // Player (created last — renders on top)
+    this.player = this.add.image(80, 270, config.playerKey);
+    this.player.setScale(config.playerScale);
 
     // Keyboard input
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -125,7 +180,6 @@ gameScene.update = function(time, delta) {
     for (let obs of this.obstacles) {
         obs.y += obs.speed * obs.direction;
 
-        // Reverse direction at boundaries
         if (obs.y > 520) obs.direction = -1;
         if (obs.y < 20) obs.direction = 1;
     }
@@ -203,32 +257,55 @@ gameScene.levelComplete = function() {
             'X-CSRFToken': getCookie('csrftoken')
         },
         body: JSON.stringify({
-            world: 'ocean',
+            world: this.worldConfig.scoreKey,
             score: score,
             time_seconds: Math.floor(this.elapsedTime)
         })
-    }).then(() => {
-        if (!IS_PREMIUM) {
+    }).then(response => response.json())
+    .then(data => {
+        if (!IS_PREMIUM && CURRENT_WORLD === 'ocean') {
             setTimeout(() => {
                 window.location.href = '/game/showroom/';
             }, 2000);
+        } else if (IS_PREMIUM && data.worlds_unlocked) {
+            const worldOrder = ['ocean', 'cloud', 'space', 'matrix'];
+            const currentIndex = worldOrder.indexOf(CURRENT_WORLD);
+            const nextWorld = worldOrder[currentIndex + 1];
+            if (nextWorld && data.worlds_unlocked > currentIndex + 1) {
+                setTimeout(() => {
+                    window.location.href = '/game/?world=' + nextWorld;
+                }, 3000);
+            }
         }
     });
 
-    this.add.text(480, 220, 'LEVEL COMPLETE!', {
+    this.add.text(480, 200, 'LEVEL COMPLETE!', {
         fontSize: '64px',
         fill: '#ffdd00',
         fontStyle: 'bold'
     }).setOrigin(0.5);
 
-    this.add.text(480, 320, !IS_PREMIUM ? 'Redirecting...' : 'Press SPACE to restart', {
-        fontSize: '24px',
+    this.add.text(480, 280, 'Score: ' + score, {
+        fontSize: '40px',
+        fill: '#08fa04',
+        fontStyle: 'bold'
+    }).setOrigin(0.5);
+
+    this.add.text(480, 340, !IS_PREMIUM ? 'Redirecting...' : 'Press SPACE for next world', {
+        fontSize: '20px',
         fill: '#ffffff'
     }).setOrigin(0.5);
 
     if (IS_PREMIUM) {
         this.input.keyboard.once('keydown-SPACE', function() {
-            this.scene.restart();
+            const worldOrder = ['ocean', 'cloud', 'space', 'matrix'];
+            const currentIndex = worldOrder.indexOf(CURRENT_WORLD);
+            const nextWorld = worldOrder[currentIndex + 1];
+            if (nextWorld) {
+                window.location.href = '/game/?world=' + nextWorld;
+            } else {
+                window.location.href = '/leaderboard/';
+            }
         }, this);
     }
 
@@ -238,7 +315,6 @@ gameScene.levelComplete = function() {
 // HELPERS
 // =============================================
 
-// Get CSRF token from cookie
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {

@@ -1,10 +1,19 @@
 import json
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from accounts.models import UserProfile
 from leaderboard.models import Score
+
+WORLD_BG = {
+    'ocean': 'ocean_loop.gif',
+    'cloud': 'cloud_loop.gif',
+    'space': 'space_loop.gif',
+    'matrix': 'matrix_loop.gif',
+}
+
+WORLD_ORDER = ['ocean', 'cloud', 'space', 'matrix']
 
 
 def home_view(request):
@@ -21,10 +30,20 @@ def game_view(request):
         is_premium = False
         worlds_unlocked = 1
 
+    current_world = request.GET.get('world', 'ocean')
+
+    # Security check — can't access world not yet unlocked
+    if current_world not in WORLD_ORDER:
+        current_world = 'ocean'
+    if WORLD_ORDER.index(current_world) + 1 > worlds_unlocked:
+        current_world = 'ocean'
+
     context = {
         'is_premium': is_premium,
         'worlds_unlocked': worlds_unlocked,
         'username': request.user.username,
+        'current_world': current_world,
+        'bg_gif': WORLD_BG.get(current_world, 'ocean_loop.gif'),
     }
     return render(request, 'game/game.html', context)
 
@@ -47,8 +66,7 @@ def submit_score(request):
 
         # Unlock next world if premium
         profile = UserProfile.objects.get(user=request.user)
-        world_order = ['ocean', 'space', 'matrix', 'cloud']
-        current_index = world_order.index(world)
+        current_index = WORLD_ORDER.index(world) if world in WORLD_ORDER else 0
 
         if profile.is_premium and profile.worlds_unlocked == current_index + 1:
             profile.worlds_unlocked = current_index + 2
