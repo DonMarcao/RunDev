@@ -9,14 +9,19 @@ gameScene.preload = function() {
     this.load.image('player', PLAYER_SPRITE);
     this.load.image('obs_404', OBS_404);
     this.load.image('obs_anchor', OBS_ANCHOR);
+    this.load.image('obs_cookie', OBS_COOKIE);
+    this.load.image('obs_jellyfish', OBS_JELLYFISH);
+    this.load.image('obs_snail', OBS_SNAIL);
+    this.load.image('obs_virus', OBS_VIRUS);
+    this.load.image('obs_link', OBS_LINK);
+    this.load.image('obs_ladybug', OBS_LADYBUG);
+    this.load.image('finish', OBS_FINISH);
 };
 
 // Runs once after preload — create game objects here
 gameScene.create = function() {
 
     // Invisible vertical lanes — X positions across the screen
-    // Player starts at x=80, finish line at x=880
-    // 8 lanes evenly spaced between
     this.lanePositions = [180, 280, 380, 480, 580, 680, 780, 880];
 
     // Store premium status
@@ -29,27 +34,38 @@ gameScene.create = function() {
         fill: '#ffffff'
     }).setOrigin(0.5);
 
-    // Create obstacles — one per lane, moving up/down
+    // Obstacle sprites per lane
+    const obsKeys = [
+        'obs_404', 'obs_anchor', 'obs_cookie', 'obs_jellyfish',
+        'obs_snail', 'obs_virus', 'obs_link', 'obs_ladybug'
+    ];
+
+    // Create obstacles — 2 per lane, moving up/down
     this.obstacles = [];
 
     for (let i = 0; i < this.lanePositions.length; i++) {
-        let startY = Phaser.Math.Between(50, 490);
-        let speed = Phaser.Math.Between(1, 3);
-        let direction = i % 2 === 0 ? 1 : -1; // alternate up/down
-        let obsKey = i % 2 === 0 ? 'obs_404' : 'obs_anchor';
+        let speed = (Phaser.Math.Between(5, 20)) / 10;
+        let direction = i % 2 === 0 ? 1 : -1;
 
-        let obs = this.add.image(
-            this.lanePositions[i],
-            startY,
-             obsKey
-        );
-        obs.setScale(0.04);
-
-
-        obs.speed = speed;
-        obs.direction = direction;
-        this.obstacles.push(obs);
+        for (let j = 0; j < 2; j++) {
+            let obs = this.add.image(
+                this.lanePositions[i],
+                (j * 220) + Phaser.Math.Between(50, 150),
+                obsKeys[i]
+            );
+            obs.setScale(0.05);
+            obs.speed = speed;
+            obs.direction = direction;
+            this.obstacles.push(obs);
+        }
     }
+
+    // Finish line markers
+    this.add.image(910, 30, 'finish').setScale(0.08);
+    this.add.image(910, 510, 'finish').setScale(0.08);
+
+    // Finish line — thin yellow line between markers
+    this.add.rectangle(910, 270, 2, 440, 0xffdd00);   
 
     // Player image (created last — renders on top)
     this.player = this.add.image(80, 270, 'player');
@@ -63,12 +79,9 @@ gameScene.create = function() {
 
     // Canvas boundaries
     this.canvasLeft = 80;
-    this.canvasRight = 900;
+    this.canvasRight = 880;
     this.canvasTop = 20;
     this.canvasBottom = 520;
-
-    // Finish line
-    this.finishLine = this.add.rectangle(920, 270, 4, 540, 0xffdd00);
 
     // Game state
     this.isGameOver = false;
@@ -129,7 +142,7 @@ gameScene.update = function(time, delta) {
         let dx = Math.abs(this.player.x - obs.x);
         let dy = Math.abs(this.player.y - obs.y);
 
-        if (dx < (16 + 14) && dy < (16 + 24)) {
+        if (dx < 25 && dy < 25) {
             this.gameOver();
         }
     }
@@ -179,6 +192,9 @@ gameScene.levelComplete = function() {
     this.isGameOver = true;
     this.player.setTint(0xffdd00);
 
+    // Calculate score — 100pts under 3s, -5pts per second after, minimum 50pts
+    let score = Math.max(50, 100 - Math.max(0, Math.floor(this.elapsedTime) - 3) * 5);
+
     // Submit score to Django
     fetch('/game/submit-score/', {
         method: 'POST',
@@ -188,11 +204,10 @@ gameScene.levelComplete = function() {
         },
         body: JSON.stringify({
             world: 'ocean',
-            score: 100,
+            score: score,
             time_seconds: Math.floor(this.elapsedTime)
         })
     }).then(() => {
-        // Redirect free users to showroom
         if (!IS_PREMIUM) {
             setTimeout(() => {
                 window.location.href = '/game/showroom/';
