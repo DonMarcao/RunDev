@@ -21,6 +21,7 @@ def leaderboard_view(request):
     return render(request, 'leaderboard/leaderboard.html', {
         'scores': scores,
         'user_scores': user_scores,
+        'completed': completed,
     })
 
 
