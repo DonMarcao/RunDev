@@ -18,6 +18,7 @@ def leaderboard_view(request):
 
     scores = Score.objects.select_related('user').order_by('-score')[:20]
     user_scores = Score.objects.filter(user=request.user).order_by('-score')
+    completed = request.GET.get('completed', False)
     return render(request, 'leaderboard/leaderboard.html', {
         'scores': scores,
         'user_scores': user_scores,
