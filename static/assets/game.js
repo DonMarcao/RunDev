@@ -11,9 +11,9 @@ const WORLD_CONFIG = {
         speedMax: 2.0,
         worldName: 'Web Ocean',
         scoreKey: 'ocean',
-        obsScale: 0.05,
-        playerScale: 0.05,
-        finishScale: 0.08
+        obsScale: 0.06,
+        playerScale: 0.07,
+        finishScale: 0.09
     },
     cloud: {
         playerKey: 'player_cc',
@@ -24,7 +24,7 @@ const WORLD_CONFIG = {
         worldName: 'Cloud City',
         scoreKey: 'cloud',
         obsScale: 0.09,
-        playerScale: 0.09,
+        playerScale: 0.1,
         finishScale: 0.12
     },
     space: {
@@ -35,9 +35,9 @@ const WORLD_CONFIG = {
         speedMax: 2.8,
         worldName: 'Code Space',
         scoreKey: 'space',
-        obsScale: 0.07,
-        playerScale: 0.07,
-        finishScale: 0.10
+        obsScale: 0.09,
+        playerScale: 0.1,
+        finishScale: 0.12
     },
     matrix: {
         playerKey: 'player_bm',
@@ -47,9 +47,9 @@ const WORLD_CONFIG = {
         speedMax: 3.0,
         worldName: 'Binary Matrix',
         scoreKey: 'matrix',
-        obsScale: 0.07,
-        playerScale: 0.07,
-        finishScale: 0.10
+        obsScale: 0.09,
+        playerScale: 0.1,
+        finishScale: 0.12
     }
 };
 
@@ -258,23 +258,23 @@ gameScene.levelComplete = function() {
         fontStyle: 'bold'
     }).setOrigin(0.5);
 
-    this.add.text(480, 340, !IS_PREMIUM ? 'Redirecting...' : 'Press SPACE for next world', {
+    this.add.text(480, 340, !IS_PREMIUM ? 'Redirecting...' : 'Press SPACE to continue', {
         fontSize: '20px',
         fill: '#ffffff'
     }).setOrigin(0.5);
 
     if (IS_PREMIUM) {
-        this.input.keyboard.once('keydown-SPACE', function() {
-            const worldOrder = ['ocean', 'cloud', 'space', 'matrix'];
-            const currentIndex = worldOrder.indexOf(CURRENT_WORLD);
-            const nextWorld = worldOrder[currentIndex + 1];
-            if (nextWorld) {
-                window.location.href = '/game/?world=' + nextWorld;
-            } else {
-                window.location.href = '/leaderboard/';
-            }
-        }, this);
-    }
+    this.input.keyboard.once('keydown-SPACE', function() {
+        const worldOrder = ['ocean', 'cloud', 'space', 'matrix'];
+        const currentIndex = worldOrder.indexOf(CURRENT_WORLD);
+        const nextWorld = worldOrder[currentIndex + 1];
+        if (nextWorld) {
+            window.location.href = '/game/?world=' + nextWorld;
+        } else {
+            window.location.href = '/leaderboard/?completed=true';
+        }
+    }, this);
+}
 
 };
 
