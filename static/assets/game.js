@@ -59,41 +59,44 @@ const WORLD_CONFIG = {
 
 let gameScene = new Phaser.Scene('GameScene');
 
-// Runs once — load assets here
 gameScene.preload = function() {
 
-    // Ocean assets
+    // Web Ocean
     this.load.image('player_oc', PLAYER_OC);
     this.load.image('finish_oc', FINISH_OC);
     OBS_OC.forEach((url, i) => this.load.image('obs_oc_' + i, url));
 
-    // Cloud City assets
+    // Cloud City
     this.load.image('player_cc', PLAYER_CC);
     this.load.image('finish_cc', FINISH_CC);
     OBS_CC.forEach((url, i) => this.load.image('obs_cc_' + i, url));
 
+    // Code Space
+    this.load.image('player_cs', PLAYER_CS);
+    this.load.image('finish_cs', FINISH_CS);
+    OBS_CS.forEach((url, i) => this.load.image('obs_cs_' + i, url));
+
+    // Binary Matrix
+    this.load.image('player_bm', PLAYER_BM);
+    this.load.image('finish_bm', FINISH_BM);
+    OBS_BM.forEach((url, i) => this.load.image('obs_bm_' + i, url));
+
 };
 
-// Runs once after preload — create game objects here
 gameScene.create = function() {
 
     const config = WORLD_CONFIG[CURRENT_WORLD] || WORLD_CONFIG.ocean;
 
-    // Invisible vertical lanes
     this.lanePositions = [180, 280, 380, 480, 580, 680, 780, 880];
-
-    // Store world config and premium status
     this.worldConfig = config;
     this.isPremium = IS_PREMIUM;
 
-    // Timer
     this.elapsedTime = 0;
     this.timerText = this.add.text(480, 20, 'Time: 0s', {
         fontSize: '20px',
         fill: '#ffffff'
     }).setOrigin(0.5);
 
-    // Create obstacles — 2 per lane, moving up/down
     this.obstacles = [];
 
     for (let i = 0; i < this.lanePositions.length; i++) {
@@ -117,103 +120,73 @@ gameScene.create = function() {
         }
     }
 
-    // Finish line
     this.add.image(910, 30, config.finishKey).setScale(config.finishScale);
     this.add.image(910, 510, config.finishKey).setScale(config.finishScale);
     this.add.rectangle(910, 270, 2, 440, 0xffdd00);
 
-    // Player (created last — renders on top)
     this.player = this.add.image(80, 270, config.playerKey);
     this.player.setScale(config.playerScale);
 
-    // Keyboard input
     this.cursors = this.input.keyboard.createCursorKeys();
-
-    // Step size
     this.stepSize = 100;
-
-    // Canvas boundaries
     this.canvasLeft = 80;
     this.canvasRight = 880;
     this.canvasTop = 20;
     this.canvasBottom = 520;
-
-    // Game state
     this.isGameOver = false;
 
 };
 
-// Runs ~60 times per second — game logic goes here
 gameScene.update = function(time, delta) {
 
     if (this.isGameOver) return;
 
-    // Move player right
     if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
         if (this.player.x + this.stepSize <= this.canvasRight) {
             this.player.x += this.stepSize;
         }
     }
 
-    // Move player left
     if (Phaser.Input.Keyboard.JustDown(this.cursors.left)) {
         if (this.player.x - this.stepSize >= this.canvasLeft) {
             this.player.x -= this.stepSize;
         }
     }
 
-    // Move player up
     if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
         if (this.player.y - this.stepSize >= this.canvasTop) {
             this.player.y -= this.stepSize;
         }
     }
 
-    // Move player down
     if (Phaser.Input.Keyboard.JustDown(this.cursors.down)) {
         if (this.player.y + this.stepSize <= this.canvasBottom) {
             this.player.y += this.stepSize;
         }
     }
 
-    // Move obstacles up and down
     for (let obs of this.obstacles) {
         obs.y += obs.speed * obs.direction;
-
         if (obs.y > 520) obs.direction = -1;
         if (obs.y < 20) obs.direction = 1;
     }
 
-    // Update timer
     this.elapsedTime += delta / 1000;
     this.timerText.setText('Time: ' + Math.floor(this.elapsedTime) + 's');
-
-    // =============================================
-    // COLLISION DETECTION
-    // =============================================
 
     for (let obs of this.obstacles) {
         let dx = Math.abs(this.player.x - obs.x);
         let dy = Math.abs(this.player.y - obs.y);
-
         if (dx < 25 && dy < 25) {
             this.gameOver();
         }
     }
-
-    // =============================================
-    // WIN CONDITION
-    // =============================================
 
     if (this.player.x >= 880) {
         this.levelComplete();
     }
 
 };
-
-// =============================================
-// GAME OVER
-// =============================================
 
 gameScene.gameOver = function() {
 
@@ -237,19 +210,13 @@ gameScene.gameOver = function() {
 
 };
 
-// =============================================
-// LEVEL COMPLETE
-// =============================================
-
 gameScene.levelComplete = function() {
 
     this.isGameOver = true;
     this.player.setTint(0xffdd00);
 
-    // Calculate score — 100pts under 3s, -5pts per second after, minimum 50pts
     let score = Math.max(50, 100 - Math.max(0, Math.floor(this.elapsedTime) - 3) * 5);
 
-    // Submit score to Django
     fetch('/game/submit-score/', {
         method: 'POST',
         headers: {
@@ -311,10 +278,6 @@ gameScene.levelComplete = function() {
 
 };
 
-// =============================================
-// HELPERS
-// =============================================
-
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -329,10 +292,6 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-
-// =============================================
-// GAME CONFIGURATION
-// =============================================
 
 let config = {
     type: Phaser.AUTO,
