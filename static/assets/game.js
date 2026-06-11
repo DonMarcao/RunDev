@@ -184,6 +184,7 @@ gameScene.update = function(time, delta) {
 
     if (this.player.x >= 880) {
         this.levelComplete();
+        return;
     }
 
 };
