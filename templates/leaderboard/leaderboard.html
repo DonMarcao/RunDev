@@ -1,12 +1,13 @@
-
 {% extends 'base.html' %}
 {% block title %}Hall of Senior Devs{% endblock %}
 {% block content %}
+
 {% if completed %}
 <div class="alert alert-warning text-center">
     🏆 You survived the stack! Thanks for playing RunDev.
 </div>
 {% endif %}
+
 <h2 class="mb-4">🏆 Hall of Senior Devs</h2>
 
 <!-- Global leaderboard -->
@@ -17,20 +18,18 @@
             <th>#</th>
             <th>Dev</th>
             <th>World</th>
-            <th>Score</th>
-            <th>Time</th>
-            <th>Label</th>
+            <th>Best Score</th>
+            <th>Best Time</th>
         </tr>
     </thead>
     <tbody>
         {% for score in scores %}
         <tr>
             <td>{{ forloop.counter }}</td>
-            <td>{{ score.user.username }}</td>
-            <td>{{ score.get_world_display }}</td>
-            <td>{{ score.score }}</td>
-            <td>{{ score.time_seconds }}s</td>
-            <td>{{ score.label }}</td>
+            <td>{{ score.user__username }}</td>
+            <td>{{ score.world }}</td>
+            <td>{{ score.best_score }}</td>
+            <td>{{ score.best_time }}s</td>
         </tr>
         {% endfor %}
     </tbody>

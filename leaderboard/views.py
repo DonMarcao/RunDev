@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Max, Min
 from accounts.models import UserProfile
 from .models import Score
 
@@ -16,9 +17,14 @@ def leaderboard_view(request):
     if not is_premium:
         return render(request, 'leaderboard/locked.html')
 
-    scores = Score.objects.select_related('user').order_by('-score')[:20]
+    scores = Score.objects.values('user__username', 'world').annotate(
+        best_score=Max('score'),
+        best_time=Min('time_seconds')
+    ).order_by('-best_score', 'best_time')[:20]
+
     user_scores = Score.objects.filter(user=request.user).order_by('-score')
     completed = request.GET.get('completed', False)
+
     return render(request, 'leaderboard/leaderboard.html', {
         'scores': scores,
         'user_scores': user_scores,
