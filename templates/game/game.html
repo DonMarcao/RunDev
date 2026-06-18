@@ -28,8 +28,8 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/phaser@4/dist/phaser.js"></script>
-<script>
+<script src="https://cdn.jsdelivr.net/npm/phaser@4/dist/phaser.js" defer></script>
+<script defer>
     const IS_PREMIUM = {{ is_premium|yesno:"true,false" }};
     const USERNAME = "{{ username }}";
     const CURRENT_WORLD = "{{ current_world }}";
@@ -88,5 +88,5 @@
     ];
     const FINISH_BM = "{% static 'assets/elements/bm_finish.png' %}";
 </script>
-<script src="{% static 'assets/game.js' %}"></script>
+<script src="{% static 'assets/game.js' %}" defer></script>
 {% endblock %}
