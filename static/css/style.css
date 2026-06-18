@@ -15,7 +15,7 @@ h1, h2, h3, h4, h5, h6 {
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
 }
 
-p, label, .text-muted, .form-label, small, td, th, .table {
+p, label, .text-muted, .form-label, small, td, th {
     color: #ff6b6b !important;
 }
 
@@ -25,6 +25,13 @@ a {
 
 a:hover {
     color: #ff9999 !important;
+}
+
+/* Garante que qualquer botão dentro de tabela/células
+   NÃO herde o vermelho do texto ao redor (evita "vermelho sobre vermelho") */
+td .btn, th .btn,
+.table .btn {
+    color: #fff !important;
 }
 
 /* ============================================= */
