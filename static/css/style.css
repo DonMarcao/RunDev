@@ -3,4 +3,87 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* ============================================= */
+/* TYPOGRAPHY — coral/red as the single text color */
+/* ============================================= */
+
+h1, h2, h3, h4, h5, h6 {
+    color: #ff6b6b !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+p, label, .text-muted, .form-label, small, td, th, .table {
+    color: #ff6b6b !important;
+}
+
+a {
+    color: #ff6b6b !important;
+}
+
+a:hover {
+    color: #ff9999 !important;
+}
+
+/* ============================================= */
+/* NAVBAR — black background, coral text */
+/* ============================================= */
+
+.navbar {
+    background: rgba(0, 0, 0, 0.9) !important;
+}
+
+.navbar-brand {
+    color: #ff6b6b !important;
+}
+
+/* ============================================= */
+/* CARDS / TABLES — black semi-transparent panels */
+/* ============================================= */
+
+.card, .table, .container {
+    background: rgba(0, 0, 0, 0.7) !important;
+}
+
+.table td, .table th {
+    color: #ff6b6b !important;
+    border-color: rgba(255, 107, 107, 0.2) !important;
+    background: transparent !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background: rgba(255, 107, 107, 0.05) !important;
+}
+
+/* ============================================= */
+/* FORM INPUTS — dark grey, light text */
+/* ============================================= */
+
+.form-control {
+    background: #2a2a2a !important;
+    color: #ff6b6b !important;
+    border: 1px solid rgba(255, 107, 107, 0.3) !important;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 107, 107, 0.5) !important;
+}
+
+.form-control:focus {
+    background: #333333 !important;
+    color: #ff6b6b !important;
+    border-color: #ff6b6b !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25) !important;
+}
+
+/* ============================================= */
+/* ALERTS */
+/* ============================================= */
+
+.alert {
+    background: rgba(0, 0, 0, 0.75) !important;
+    color: #ff6b6b !important;
+    border: 1px solid #ff6b6b !important;
 }

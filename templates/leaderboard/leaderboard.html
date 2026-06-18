@@ -10,7 +10,42 @@
 
 <h2 class="mb-4">🏆 Hall of Senior Devs</h2>
 
-<!-- Global leaderboard -->
+<!-- Total Score Ranking -->
+
+<p class="text-muted small mb-3">🌍Sum of all world scores — max 400pts for completing all 4 worlds🌍</p>
+{% if total_scores %}
+<table class="table table-dark table-striped mb-5">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Dev</th>
+            <th>Total Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in total_scores %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ entry.user__username }}</td>
+            <td>{{ entry.total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="mb-5">No scores yet — be the first to complete a world!</p>
+{% endif %}
+
+<!-- World Filter -->
+<h5 class="mb-3">🗺️ Best Score by World</h5>
+<div class="d-flex gap-2 mb-3 flex-wrap">
+    <a href="/leaderboard/" class="btn btn-sm {% if world_filter == 'all' %}btn-warning{% else %}btn-danger{% endif %}">All</a>
+    <a href="/leaderboard/?world=ocean" class="btn btn-sm {% if world_filter == 'ocean' %}btn-warning{% else %}btn-danger{% endif %}">🌊 Web Ocean</a>
+    <a href="/leaderboard/?world=cloud" class="btn btn-sm {% if world_filter == 'cloud' %}btn-warning{% else %}btn-danger{% endif %}">☁️ Cloud City</a>
+    <a href="/leaderboard/?world=space" class="btn btn-sm {% if world_filter == 'space' %}btn-warning{% else %}btn-danger{% endif %}">🚀 Code Space</a>
+    <a href="/leaderboard/?world=matrix" class="btn btn-sm {% if world_filter == 'matrix' %}btn-warning{% else %}btn-danger{% endif %}">💻 Binary Matrix</a>
+</div>
+
 {% if scores %}
 <table class="table table-dark table-striped mb-5">
     <thead>
@@ -35,7 +70,7 @@
     </tbody>
 </table>
 {% else %}
-<p class="mb-5">No scores yet — be the first to complete a world!</p>
+<p class="mb-5">No scores for this world yet.</p>
 {% endif %}
 
 <!-- Your scores with CRUD -->
@@ -63,14 +98,14 @@
                     <input type="text" name="label" value="{{ score.label }}"
                            class="form-control form-control-sm" placeholder="Add label..."
                            style="max-width: 150px;">
-                    <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
+                    <button type="submit" class="btn btn-sm btn-warning">Save</button>
                 </form>
             </td>
             <td>
                 <form method="POST" action="/leaderboard/delete/{{ score.id }}/"
                       onsubmit="return confirm('Delete this score?')">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                 </form>
             </td>
         </tr>

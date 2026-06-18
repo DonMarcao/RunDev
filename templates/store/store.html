@@ -1,27 +1,73 @@
 {% extends 'base.html' %}
 {% block title %}Character Store{% endblock %}
 {% block content %}
-<h2 class="mb-4">Choose Your Developer</h2>
-{% if characters %}
-<div class="row">
-    {% for character in characters %}
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            {% if character.image %}
-            <img src="{{ character.image.url }}" class="card-img-top" alt="{{ character.name }}">
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{ character.name }}</h5>
-                <p class="card-text">{{ character.description }}</p>
-                <p class="card-text"><strong>World: {{ character.get_world_display }}</strong></p>
-                <p class="card-text">£{{ character.price }}</p>
-                <a href="/payments/checkout/" class="btn btn-primary">Unlock Premium</a>
+
+
+<!-- Unlock Premium with Worlds inside -->
+<div class="row justify-content-center mb-5">
+    <div class="col-12">
+        <div class="card bg-dark text-white text-center p-4">
+            <h4>🔒 Unlock Premium — £4.99</h4>
+            <p>Access all worlds, characters and the Hall of Senior Devs</p>
+
+            <div class="row justify-content-center mt-3">
+                <div class="col-6 col-md-3 mb-3">
+                    <div class="card text-center p-2">
+                        <small class="text-muted">✅ World 1</small>
+                        <strong>Web Ocean</strong>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 mb-3">
+                    <div class="card text-center p-2 border-warning">
+                        <small class="text-warning">🔒 World 2</small>
+                        <strong>Code Space</strong>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 mb-3">
+                    <div class="card text-center p-2 border-warning">
+                        <small class="text-warning">🔒 World 3</small>
+                        <strong>Binary Matrix</strong>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 mb-3">
+                    <div class="card text-center p-2 border-warning">
+                        <small class="text-warning">🔒 World 4</small>
+                        <strong>Cloud City</strong>
+                    </div>
+                </div>
             </div>
+
+            <a href="/payments/checkout/" class="btn btn-warning btn-lg mt-2">Unlock Now</a>
         </div>
     </div>
-    {% endfor %}
 </div>
-{% else %}
-<p>No characters available yet.</p>
-{% endif %}
+
+<div class="text-center py-4">
+    <h2>🏪 Choose Your Developer Comming Soon</h2>
+</div>
+
+
+<!-- Developers — Female | Male | Robot -->
+<h5 class="text-center mb-3">Developers</h5>
+<div class="row justify-content-center mb-4">
+    <div class="col-6 col-md-4 mb-3 text-center">
+        <div class="card p-2 border-warning">
+            <small class="text-warning">🔒 Coming Soon</small>
+            <strong>Female Superhero</strong>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 mb-3 text-center">
+        <div class="card p-2 border-warning">
+            <small class="text-warning">🔒 Coming Soon</small>
+            <strong>Male Superhero</strong>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 mb-3 text-center">
+        <div class="card p-2 border-warning">
+            <small class="text-warning">🔒 Coming Soon</small>
+            <strong>Robot Dev</strong>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
