@@ -10,10 +10,11 @@
 </div>
 <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
     <div style="position: relative; width: 960px; height: 540px;">
-        <img id="bg-gif"
-             src="{% static 'assets/background/' %}{{ bg_gif }}"
-             alt="Animated world background"
-             style="position: absolute; top: 0; left: 0; width: 960px; height: 540px; z-index: 0;">
+        <video id="bg-video" autoplay loop muted playsinline
+               style="position: absolute; top: 0; left: 0; width: 960px; height: 540px; z-index: 0;">
+            <source src="{% static 'assets/background/' %}{{ bg_video }}" type="video/webm">
+            Animated world background.
+        </video>
         <div id="game-container"
              style="position: absolute; top: 0; left: 0; z-index: 1;">
         </div>

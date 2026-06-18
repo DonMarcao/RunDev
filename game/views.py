@@ -7,10 +7,10 @@ from accounts.models import UserProfile
 from leaderboard.models import Score
 
 WORLD_BG = {
-    'ocean': 'ocean_loop.gif',
-    'cloud': 'cloud_loop.gif',
-    'space': 'space_loop.gif',
-    'matrix': 'matrix_loop.gif',
+    'ocean': 'ocean_loop.webm',
+    'cloud': 'cloud_loop.webm',
+    'space': 'space_loop.webm',
+    'matrix': 'matrix_loop.webm',
 }
 
 WORLD_ORDER = ['ocean', 'cloud', 'space', 'matrix']
@@ -43,7 +43,7 @@ def game_view(request):
         'worlds_unlocked': worlds_unlocked,
         'username': request.user.username,
         'current_world': current_world,
-        'bg_gif': WORLD_BG.get(current_world, 'ocean_loop.gif'),
+        'bg_video': WORLD_BG.get(current_world, 'ocean_loop.webm'),
     }
     return render(request, 'game/game.html', context)
 
