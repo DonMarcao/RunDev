@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Unlock Premium{% endblock %}
 {% block content %}
 
@@ -8,7 +9,7 @@
 </div>
 
 <div class="row justify-content-center mb-4">
-    <div class="col-md-8">
+    <div class="col-12">
         <div class="card bg-dark text-white text-center p-4">
             <h4>🔒 Unlock Premium — £4.99</h4>
             <p>Access all worlds, characters and the Hall of Senior Devs</p>
@@ -19,57 +20,45 @@
 
 <!-- Worlds Preview -->
 <h5 class="text-center mb-3">What's waiting for you</h5>
-<div class="row justify-content-center mb-4">
-    <div class="col-6 col-md-3 mb-3">
-        <div class="card text-center p-2">
-            <small class="text-muted">✅ World 1</small>
-            <strong>Web Ocean</strong>
-        </div>
-    </div>
-    <div class="col-6 col-md-3 mb-3">
-        <div class="card text-center p-2 border-warning">
-            <small class="text-warning">🔒 World 2</small>
-            <strong>Code Space</strong>
-        </div>
-    </div>
-    <div class="col-6 col-md-3 mb-3">
-        <div class="card text-center p-2 border-warning">
-            <small class="text-warning">🔒 World 3</small>
-            <strong>Binary Matrix</strong>
-        </div>
-    </div>
-    <div class="col-6 col-md-3 mb-3">
-        <div class="card text-center p-2 border-warning">
-            <small class="text-warning">🔒 World 4</small>
-            <strong>Cloud City</strong>
+<!-- Unlock Premium with Worlds inside -->
+<div class="row justify-content-center mb-5">
+    <div class="col-12">
+        <div class="card bg-dark text-white text-center p-4">            
+            <div class="row justify-content-center mt-3">
+                <div class="col-6 mb-3">
+                    <div class="card bg-transparent text-center p-2 border-success">
+                        <small class="text-warning">✅ World 1</small>
+                        <strong class="text-danger">Web Ocean</strong>
+                        <img src="{% static 'assets/ui/preview_ocean.png' %}" class="img-fluid mb-2" alt="Web Ocean">                        
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
+                    <div class="card bg-transparent text-center p-2 border-warning">
+                        <small class="text-warning">🔒 World 2</small>
+                        <strong class="text-danger">Cloud City</strong>
+                        <img src="{% static 'assets/ui/preview_cloud.png' %}" class="img-fluid mb-2" alt="Cloud City">                        
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
+                    <div class="card bg-transparent text-center p-2 border-warning">
+                        <small class="text-warning">🔒 World 3</small>
+                        <strong class="text-danger">Code Space</strong>
+                        <img src="{% static 'assets/ui/preview_space.png' %}" class="img-fluid mb-2" alt="Code Space">                        
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
+                    <div class="card bg-transparent text-center p-2 border-warning">
+                        <small class="text-warning">🔒 World 4</small>
+                        <strong class="text-danger">Binary Matrix</strong>
+                        <img src="{% static 'assets/ui/preview_matrix.png' %}" class="img-fluid mb-2" alt="Binary Matrix">                        
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Characters Preview -->
-<h5 class="text-center mb-3">amazing new developers</h5>
-<div class="row justify-content-center mb-4">
-    <div class="col-6 col-md-3 mb-3 text-center">
-        <div class="card p-2">
-            <small class="text-muted">Default Dev</small>
-        </div>
-    </div>
-    <div class="col-6 col-md-3 mb-3 text-center">
-        <div class="card p-2 border-warning">
-            <small class="text-warning">🔒 Female Superhero</small>
-        </div>
-    </div>
-    <div class="col-6 col-md-3 mb-3 text-center">
-        <div class="card p-2 border-warning">
-            <small class="text-warning">🔒 Male Superhero</small>
-        </div>
-    </div>
-    <div class="col-6 col-md-3 mb-3 text-center">
-        <div class="card p-2 border-warning">
-            <small class="text-warning">🔒 Robot Dev</small>
-        </div>
-    </div>
-</div>
+
 
 <div class="text-center">
     <a href="/game/" class="btn btn-danger">Back to Game</a>
