@@ -15,7 +15,7 @@ h1, h2, h3, h4, h5, h6 {
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
 }
 
-p, label, small, td, th ul li {
+p, label, small, td, th, ul, li {
     color: #ff6b6b;
 }
 
