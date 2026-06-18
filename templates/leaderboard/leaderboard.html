@@ -8,11 +8,11 @@
 </div>
 {% endif %}
 
-<h2 class="mb-4">🏆 Hall of Senior Devs</h2>
+<h1 class="mb-4">🏆 Hall of Senior Devs</h1>
 
 <!-- Total Score Ranking -->
-
-<p class="text-muted small mb-3">🌍Sum of all world scores — max 400pts for completing all 4 worlds🌍</p>
+<h2 class="mb-2">🌍 Total Score Ranking</h2>
+<p class="text-muted small mb-3">Sum of all world scores — max 400pts for completing all 4 worlds</p>
 {% if total_scores %}
 <table class="table table-dark table-striped mb-5">
     <thead>
@@ -37,7 +37,7 @@
 {% endif %}
 
 <!-- World Filter -->
-<h5 class="mb-3">🗺️ Best Score by World</h5>
+<h2 class="mb-3">🗺️ Best Score by World</h2>
 <div class="d-flex gap-2 mb-3 flex-wrap">
     <a href="/leaderboard/" class="btn btn-sm {% if world_filter == 'all' %}btn-warning{% else %}btn-danger{% endif %}">All</a>
     <a href="/leaderboard/?world=ocean" class="btn btn-sm {% if world_filter == 'ocean' %}btn-warning{% else %}btn-danger{% endif %}">🌊 Web Ocean</a>
@@ -74,7 +74,7 @@
 {% endif %}
 
 <!-- Your scores with CRUD -->
-<h4 class="mb-3">Your Scores</h4>
+<h2 class="mb-3">Your Scores</h2>
 {% if user_scores %}
 <table class="table table-striped">
     <thead>
