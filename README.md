@@ -567,12 +567,14 @@ python manage.py test
 
 ### Lighthouse Scores
 
-| Page | Mobile Performance | Desktop Performance |
-|------|--------------------|---------------------|
-| Home | TBC | TBC |
-| Game | TBC | TBC |
+| Page | Mobile Performance | Desktop Performance | Accessibility | Best Practices | SEO |
+|------|--------------------|--------------------|----------------|-----------------|-----|
+| Home | See screenshot | See screenshot | 100 | 100 | 100 |
+| Game | 60 | 89 | 94–100 | 100 | 100 |
 
-*Note: Lighthouse scores to be completed before final submission.*
+Screenshots: [Home Desktop](docs/lighthouse/home_desktop_lighthouse.png) | [Home Mobile](docs/lighthouse/home_mobile_lighthouse.png) | [Game Desktop](docs/lighthouse/game_desktop_lighthouse.png) | [Game Mobile](docs/lighthouse/game_mobile_lighthouse.png)
+
+**Note on Game page performance:** The Game page initially scored 72 (desktop) / 82 (mobile) due to large GIF background assets (50MB+ total across 4 worlds). This was resolved by converting all world backgrounds from GIF to WebM video format, reducing total background asset size from ~50MB to under 400KB combined. Further improvements included deferred script loading for the Phaser CDN bundle, WhiteNoise long-term cache headers (`WHITENOISE_MAX_AGE`), and `aria-hidden` on the decorative background video. Desktop performance improved to 89; mobile remains lower (60) primarily due to the size of the Phaser 4 game engine bundle (1.2MB) loaded from CDN, which has a proportionally larger impact under Lighthouse's simulated mobile network/CPU throttling. Since the game is explicitly disclaimed as desktop-only (keyboard-required), further mobile performance optimization was deprioritized in favour of completing core functionality and documentation ahead of the submission deadline.
 
 ---
 
