@@ -176,9 +176,9 @@ The progression system was designed so that each unlock has real meaning:
 
 A character selector was planned but moved to V2 to avoid scope creep. The store currently shows all developer characters as "coming soon". Each world already has its own developer sprite assigned automatically based on the current world.
 
-**Mobile Support — Pending**
+**Mobile Support — Desktop-Only by Design**
 
-The game requires keyboard input (arrow keys) which makes it desktop-only by design. Mobile on-screen controls are planned for V2. All Django pages (home, leaderboard, store, checkout) are fully responsive via Bootstrap 5. A mobile disclaimer will be added to the game page pending tutor feedback.
+The game requires keyboard input (arrow keys) which makes it desktop-only by design. A disclaimer (⚠️ Desktop only — requires a keyboard to play) is displayed on both the Home page and the Game page to set expectations before play. All Django pages (home, leaderboard, store, checkout) remain fully responsive via Bootstrap 5. Mobile on-screen controls are planned for V2.
 
 ---
 
@@ -301,6 +301,10 @@ Binary Matrix:  Matrix green on black
 - Animated GIF backgrounds per world in game canvas
 - Flash messages for auth actions
 - Bootstrap 5 responsive layout
+
+### Known Issues
+
+- **Game Over / Level Complete overlap (rare)** — In rare cases, if the player crosses the finish line at the exact same frame an obstacle collision is detected, both the "Game Over" and "Level Complete" messages can render simultaneously. The win condition is checked before the collision check to minimise this, but the edge case can still occur under specific timing. This does not affect score submission or game functionality, and is difficult to reproduce intentionally. Flagged here for transparency rather than left undocumented.
 
 ### Features Left to Implement
 
