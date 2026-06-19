@@ -4,6 +4,19 @@ This document covers manual and automated testing performed on RunDev prior to s
 
 ---
 
+## Testing Coverage Overview
+
+The application was assessed for **functionality**, **usability**, **responsiveness** and **data management**, across both the Django pages and the Phaser game itself:
+
+| Area | Where it's covered | Summary |
+|------|--------------------|---------|
+| **Functionality** | [Automated Testing](#automated-testing), [Manual Testing — User Stories](#manual-testing--user-stories), [Bugs Fixed During Development](#bugs-fixed-during-development) | 37 automated tests across all 5 apps; every user story manually walked through end-to-end (register → play → pay → leaderboard); functional bugs found during testing (e.g. Stripe payment verification, Store unlock status) documented and fixed |
+| **Usability** | [Manual Testing — Features](#manual-testing--features) | Navigation, CRUD actions (label edit/delete), disclaimers, feedback messages and the leaderboard "manage your scores" shortcut link manually checked for discoverability and clarity |
+| **Responsiveness** | [Responsiveness Testing](#responsiveness-testing) | Django pages tested across 375px/768px/1024px/1440px breakpoints in Chrome DevTools; game explicitly desktop-only by design (keyboard required), disclosed via on-page disclaimer |
+| **Data management** | [Manual Testing — User Stories](#manual-testing--user-stories) (Leaderboard & CRUD section), [Automated Testing](#automated-testing) | Full CRUD on the Score model tested both manually and automatically — create (score submission), read (leaderboard tables), update (label editing), delete (score removal), including a test confirming a user cannot delete another user's score |
+
+---
+
 ## Table of Contents
 
 1. [Automated Testing](#automated-testing)

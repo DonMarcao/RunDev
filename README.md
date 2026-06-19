@@ -89,7 +89,7 @@ Developed as part of the Level 5 Diploma in Full Stack Web Development, demonstr
 ✅ **Payment Integration** (Stripe checkout, webhook, success/cancel flows)  
 ✅ **Game Development** (Phaser 4, sprite management, collision detection)  
 ✅ **Deployment** (Heroku, WhiteNoise, dj-database-url)  
-✅ **Automated Testing** (31 unit tests across all apps)  
+✅ **Automated Testing** (37 unit tests across all apps)  
 ✅ **Code Quality** (PEP8 compliant)
 
 ### Target Audience
