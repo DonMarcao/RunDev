@@ -42,6 +42,7 @@ def success_view(request):
     profile.save()
     return render(request, 'payments/success.html')
 
+
 @login_required
 def cancel_view(request):
     return render(request, 'payments/cancel.html')

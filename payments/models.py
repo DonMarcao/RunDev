@@ -10,4 +10,5 @@ class Purchase(models.Model):
     is_successful = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.user.username} - £{self.amount} - {'Success' if self.is_successful else 'Failed'}"
+        status = 'Success' if self.is_successful else 'Failed'
+        return f"{self.user.username} - £{self.amount} - {status}"

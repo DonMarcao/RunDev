@@ -140,6 +140,22 @@ Issues found and fixed during validation:
 
 `static/css/style.css` validated via [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) — ✅ 0 errors.
 
+### Python Code Quality (PEP8)
+
+All Python files validated using `pycodestyle` (excluding `venv`, `migrations` and `staticfiles`):
+
+```bash
+pycodestyle --exclude=venv,migrations,staticfiles .
+```
+
+✅ 0 errors after fixes.
+
+Issues found and fixed:
+- Missing newline at end of file (`W292`) — present in nearly every app file, fixed in bulk
+- Lines exceeding 79 characters (`E501`) — fixed in `accounts/models.py`, `payments/models.py` and `rundev/settings.py` by extracting intermediate variables (e.g. `status`) or wrapping long string concatenations across multiple lines
+- Missing 2 blank lines before a function definition (`E302`) — fixed in `payments/views.py`
+- Missing whitespace after `:` and trailing whitespace (`E231`, `W291`) — introduced by editor autoformatting while wrapping `AUTH_PASSWORD_VALIDATORS` entries in `rundev/settings.py`, fixed by rewriting the block manually
+
 ---
 
 ## Known Issues
@@ -165,3 +181,5 @@ In rare cases, if the player crosses the finish line at the exact same frame an 
 | Text colour leaking onto buttons/elements inside tables | Generic `.table` selector in `style.css` forced `color: #ff6b6b !important`, which was inherited by child elements (buttons, badges) inside table cells | Removed `.table` from the generic text-colour selector, keeping the coral colour rule scoped to `td`/`th` text only |
 | Background videos appeared squashed in game canvas (letterboxing) after GIF → WebM conversion | `ffprobe` showed all 4 WebM files were correctly encoded at 960x540 pixels but carried an incorrect Sample Aspect Ratio (SAR) in their metadata (e.g. `1093:960` instead of `1:1`), causing browsers to apply automatic letterboxing based on the stored aspect ratio rather than actual pixel size | Re-encoded all 4 background videos with `ffmpeg -vf "setsar=1:1"` to force a 1:1 pixel aspect ratio, restoring the correct 16:9 display ratio |
 | Fixed background video appeared unchanged after deploy despite correct file on Heroku | Browser was serving the cached (pre-fix) video file from its local media cache; a hard refresh (`Ctrl+Shift+R`) reloads HTML/CSS/JS but does not reliably bust cached `<video>` sources | Verified fix by testing in a private/incognito window (no cache) and by manually clearing cached images/files via browser settings |
+| Lighthouse Performance score stuck below 90 (desktop) despite optimisations | Global `bg_main.png` background image (used on every page) was 1.68MB, uncompressed; this was the single largest opportunity flagged by Lighthouse's "Improve image delivery" audit | Compressed `bg_main.png` to an optimised JPEG (164KB, quality 80, ~90% size reduction) using Pillow; desktop Performance score rose from 89 to 91 |
+| Lighthouse re-test showed no improvement immediately after the image fix | Browser/Lighthouse was reusing cached version of the old 1.68MB image from a previous visit in the same tab | Re-ran Lighthouse in a fresh private/incognito window, confirming the real score (91) |

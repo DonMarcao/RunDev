@@ -9,4 +9,8 @@ class UserProfile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {'Premium' if self.is_premium else 'Free'} - World {self.worlds_unlocked}"
+        status = 'Premium' if self.is_premium else 'Free'
+        return (
+            f"{self.user.username} - {status} - "
+            f"World {self.worlds_unlocked}"
+        )
