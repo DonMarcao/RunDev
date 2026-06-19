@@ -29,13 +29,17 @@ def game_view(request):
         is_premium = False
         worlds_unlocked = 1
 
-    current_world = request.GET.get('world', 'ocean')
+    # Default to the player's furthest unlocked world (not always 'ocean'),
+    # so clicking "Play" from the navbar resumes progress instead of
+    # restarting from World 1 every time.
+    default_world = WORLD_ORDER[min(worlds_unlocked, len(WORLD_ORDER)) - 1]
+    current_world = request.GET.get('world', default_world)
 
     # Security check — can't access world not yet unlocked
     if current_world not in WORLD_ORDER:
-        current_world = 'ocean'
+        current_world = default_world
     if WORLD_ORDER.index(current_world) + 1 > worlds_unlocked:
-        current_world = 'ocean'
+        current_world = default_world
 
     context = {
         'is_premium': is_premium,

@@ -30,4 +30,7 @@ a:hover {
 .navbar-brand {
     color: #ff6b6b !important;
 }
- 
+
+.helptext, .errorlist, form div {
+    color: #ff6b6b;
+}
