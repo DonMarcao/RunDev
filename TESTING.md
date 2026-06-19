@@ -106,6 +106,9 @@ Tests were re-run after all leaderboard view changes (best-score-per-world annot
 | Desktop-only disclaimer | Visit home and game pages | ✅ Pass — disclaimer visible on both |
 | "Thanks for playing" banner | Complete Binary Matrix (final world) | ✅ Pass — banner shown on leaderboard with `?completed=true` |
 | Background video covers canvas correctly (all 4 worlds) | Visit `/game/` for each world, hard-clear browser cache, observe canvas edges | ✅ Pass — no letterboxing after SAR fix (see Bugs Fixed) |
+| Custom 404 page | Visit a non-existent URL (e.g. `/asdasd/`) on the deployed Heroku app (`DEBUG=False`) | ✅ Pass — themed 404 page shown with a link back to Home, instead of Django's default error page |
+| Store reflects real unlock status | Compare `/store/` before and after purchasing Premium / completing worlds | ✅ Pass — locks/unlocks update correctly (see Bugs Fixed) |
+| "Play" resumes furthest unlocked world | Unlock World 2/3, visit Store, click "Play" in navbar | ✅ Pass — resumes at furthest world instead of resetting to World 1 (see Bugs Fixed) |
 
 ---
 
@@ -163,6 +166,8 @@ npx eslint static/assets/game.js
 
 ✅ 0 errors, 0 warnings.
 
+![ESLint Validation](docs/testing/eslint_validator.png)
+
 Configuration notes:
 - Browser/Phaser globals (`Phaser`, `window`, `fetch`, `setTimeout`, etc.) and the Django-template-injected variables (`IS_PREMIUM`, `CURRENT_WORLD`, `WORLD_OBS_*`, `FINISH_*`) are declared as globals to avoid false `no-undef` errors
 - `giveUp()` is explicitly allowed to appear "unused" within the file, since it is intentionally exposed globally and called via `onclick="giveUp()"` from `game.html`, not from within `game.js` itself
@@ -213,3 +218,7 @@ In rare cases, if the player crosses the finish line at the exact same frame an 
 | Fixed background video appeared unchanged after deploy despite correct file on Heroku | Browser was serving the cached (pre-fix) video file from its local media cache; a hard refresh (`Ctrl+Shift+R`) reloads HTML/CSS/JS but does not reliably bust cached `<video>` sources | Verified fix by testing in a private/incognito window (no cache) and by manually clearing cached images/files via browser settings |
 | Lighthouse Performance score stuck below 90 (desktop) despite optimisations | Global `bg_main.png` background image (used on every page) was 1.68MB, uncompressed; this was the single largest opportunity flagged by Lighthouse's "Improve image delivery" audit | Compressed `bg_main.png` to an optimised JPEG (164KB, quality 80, ~90% size reduction) using Pillow; desktop Performance score rose from 89 to 91 |
 | Lighthouse re-test showed no improvement immediately after the image fix | Browser/Lighthouse was reusing cached version of the old 1.68MB image from a previous visit in the same tab | Re-ran Lighthouse in a fresh private/incognito window, confirming the real score (91) |
+| Stripe checkout granted Premium without verifying payment | `success_view` set `is_premium = True` on any visit to `/payments/success/`, with no check that a real payment had occurred — the URL could be visited directly without paying | Added `session_id` verification via `stripe.checkout.Session.retrieve()`, only granting access when `payment_status == 'paid'`; covered by new automated tests for paid, unpaid and missing-session-id cases |
+| Store page always showed World 2–4 as locked, even after purchasing Premium | `store.html` used hardcoded 🔒/✅ icons and text, with no Django template logic comparing against the user's actual `worlds_unlocked` value | `store_view` now passes `is_premium` and `worlds_unlocked` to the template; lock/unlock icons, borders and text are now conditional (`{% if worlds_unlocked >= 2 %}`, etc.) |
+| Clicking "Play" in the navbar always restarted the game at World 1 | `game_view` defaulted `current_world` to `'ocean'` whenever no `?world=` parameter was present in the URL, ignoring the player's actual progress | `game_view` now defaults to the player's furthest unlocked world (derived from `worlds_unlocked`) instead of always defaulting to `'ocean'` |
+| Help text on the register form was inconsistently coloured (some lines coral, some near-illegible dark grey) | Django's `{{ form.as_div }}` wraps password help text in a `.helptext` class not covered by the existing CSS colour rules | Added `.helptext`, `.errorlist` and `form div` selectors to `style.css` to ensure all form-related text uses the consistent coral colour |

@@ -89,7 +89,7 @@ Developed as part of the Level 5 Diploma in Full Stack Web Development, demonstr
 ✅ **Payment Integration** (Stripe checkout, webhook, success/cancel flows)  
 ✅ **Game Development** (Phaser 4, sprite management, collision detection)  
 ✅ **Deployment** (Heroku, WhiteNoise, dj-database-url)  
-✅ **Automated Testing** (37 unit tests across all apps)  
+✅ **Automated Testing** (31 unit tests across all apps)  
 ✅ **Code Quality** (PEP8 compliant)
 
 ### Target Audience
@@ -314,6 +314,7 @@ Binary Matrix:  Matrix green on black
 - Looping WebM video backgrounds per world in game canvas
 - Flash messages for auth actions
 - Bootstrap 5 responsive layout
+- Custom 404 page styled to match the site theme, with a one-click link back to Home
 
 ### Known Issues
 
@@ -566,6 +567,7 @@ Every language used in the project was validated with an appropriate tool:
 | JavaScript | [ESLint](https://eslint.org/) | ✅ 0 errors, 0 warnings |
 | Python | [pycodestyle](https://pycodestyle.pycqa.org/) (PEP8) | ✅ 0 errors |
 
+![ESLint Validation](docs/testing/eslint_validator.png)
 ![PEP8 Validation](docs/testing/pep8_validator.png)
 
 Full validation details and screenshots in [TESTING.md](TESTING.md#code-validation).
