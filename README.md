@@ -186,16 +186,29 @@ The game requires keyboard input (arrow keys) which makes it desktop-only by des
 
 Wireframes produced before development as part of the UX planning phase.
 
-| Page | Wireframe |
-|------|-----------|
-| Home | [docs/wireframes/01_home.png](docs/wireframes/01_home.png) |
-| Login | [docs/wireframes/02_login.png](docs/wireframes/02_login.png) |
-| Register | [docs/wireframes/03_register.png](docs/wireframes/03_register.png) |
-| Game | [docs/wireframes/04_game.png](docs/wireframes/04_game.png) |
-| Showroom | [docs/wireframes/05_showroom.png](docs/wireframes/05_showroom.png) |
-| Leaderboard | [docs/wireframes/06_leaderboard.png](docs/wireframes/06_leaderboard.png) |
-| Store | [docs/wireframes/07_store.png](docs/wireframes/07_store.png) |
-| Checkout | [docs/wireframes/08_checkout.png](docs/wireframes/08_checkout.png) |
+#### Home
+![Wireframe Home](docs/wireframes/01_home.png)
+
+#### Login
+![Wireframe Login](docs/wireframes/02_login.png)
+
+#### Register
+![Wireframe Register](docs/wireframes/03_register.png)
+
+#### Game
+![Wireframe Game](docs/wireframes/04_game.png)
+
+#### Showroom
+![Wireframe Showroom](docs/wireframes/05_showroom.png)
+
+#### Leaderboard
+![Wireframe Leaderboard](docs/wireframes/06_leaderboard.png)
+
+#### Store
+![Wireframe Store](docs/wireframes/07_store.png)
+
+#### Checkout
+![Wireframe Checkout](docs/wireframes/08_checkout.png)
 
 ---
 
@@ -556,28 +569,43 @@ python manage.py test
 
 ### W3C Validation
 
-| Template | Screenshot |
-|----------|------------|
-| Home | [docs/validation/home_validator.png](docs/validation/home_validator.png) |
-| Login | [docs/validation/login_validator.png](docs/validation/login_validator.png) |
-| Register | [docs/validation/register_validator.png](docs/validation/register_validator.png) |
-| Game | [docs/validation/game_validator.png](docs/validation/game_validator.png) |
-| Showroom | [docs/validation/showroom_validator.png](docs/validation/showroom_validator.png) |
-| Leaderboard | [docs/validation/leaderboard_validator.png](docs/validation/leaderboard_validator.png) |
-| Store | [docs/validation/store_validator.png](docs/validation/store_validator.png) |
-| Checkout | [docs/validation/checkout_validator.png](docs/validation/checkout_validator.png) |
-| CSS | [docs/validation/css_validator.png](docs/validation/css_validator.png) |
+#### Home
+![Validation Home](docs/validation/home_validator.png)
+
+#### Login
+![Validation Login](docs/validation/login_validator.png)
+
+#### Register
+![Validation Register](docs/validation/register_validator.png)
+
+#### Game
+![Validation Game](docs/validation/game_validator.png)
+
+#### Showroom
+![Validation Showroom](docs/validation/showroom_validator.png)
+
+#### Leaderboard
+![Validation Leaderboard](docs/validation/leaderboard_validator.png)
+
+#### Store
+![Validation Store](docs/validation/store_validator.png)
+
+#### Checkout
+![Validation Checkout](docs/validation/checkout_validator.png)
+
+#### CSS
+![Validation CSS](docs/validation/css_validator.png)
 
 ### Lighthouse Scores
 
 | Page | Mobile Performance | Desktop Performance | Accessibility | Best Practices | SEO |
 |------|--------------------|--------------------|----------------|-----------------|-----|
-| Home | See screenshot | See screenshot | 100 | 100 | 100 |
-| Game | 60 | 89 | 94–100 | 100 | 100 |
+| Home | 98 | 100 | 100 | 100 | 100 |
+| Game | 87 | 91 | 100 | 100 | 100 |
 
 Screenshots: [Home Desktop](docs/lighthouse/home_desktop_lighthouse.png) | [Home Mobile](docs/lighthouse/home_mobile_lighthouse.png) | [Game Desktop](docs/lighthouse/game_desktop_lighthouse.png) | [Game Mobile](docs/lighthouse/game_mobile_lighthouse.png)
 
-**Note on Game page performance:** The Game page initially scored 72 (desktop) / 82 (mobile) due to large GIF background assets (50MB+ total across 4 worlds). This was resolved by converting all world backgrounds from GIF to WebM video format, reducing total background asset size from ~50MB to under 400KB combined. Further improvements included deferred script loading for the Phaser CDN bundle, WhiteNoise long-term cache headers (`WHITENOISE_MAX_AGE`), and `aria-hidden` on the decorative background video. Desktop performance improved to 89; mobile remains lower (60) primarily due to the size of the Phaser 4 game engine bundle (1.2MB) loaded from CDN, which has a proportionally larger impact under Lighthouse's simulated mobile network/CPU throttling. Since the game is explicitly disclaimed as desktop-only (keyboard-required), further mobile performance optimization was deprioritized in favour of completing core functionality and documentation ahead of the submission deadline.
+**Note on Game page performance:** The Game page initially scored 72 (desktop) / 82 (mobile) due to large GIF background assets (50MB+ total across 4 worlds). This was resolved by converting all world backgrounds from GIF to WebM video format, reducing total background asset size from ~50MB to under 400KB combined, which brought desktop performance to 89. A further Lighthouse audit identified the global `bg_main.png` background image (used across all pages, 1.68MB) as the largest remaining opportunity, estimated at ~1.5MB of potential savings. Compressing it to an optimised JPEG (164KB, ~90% size reduction, quality 80) pushed desktop performance to **91** and mobile to **87**. The remaining gap on mobile is primarily due to the size of the Phaser 4 game engine bundle (1.2MB) loaded from CDN, which has a proportionally larger impact under Lighthouse's simulated mobile network/CPU throttling. Since the game is explicitly disclaimed as desktop-only (keyboard-required), this was considered an acceptable trade-off.
 
 ---
 
