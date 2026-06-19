@@ -26,7 +26,10 @@ def checkout_view(request):
                 'quantity': 1,
             }],
             mode='payment',
-            success_url=request.build_absolute_uri('/payments/success/'),
+            success_url=(
+                request.build_absolute_uri('/payments/success/')
+                + '?session_id={CHECKOUT_SESSION_ID}'
+            ),
             cancel_url=request.build_absolute_uri('/payments/cancel/'),
             metadata={'user_id': request.user.id}
         )
@@ -36,10 +39,21 @@ def checkout_view(request):
 
 @login_required
 def success_view(request):
-    profile, _ = UserProfile.objects.get_or_create(user=request.user)
-    profile.is_premium = True
-    profile.worlds_unlocked = 2  # Premium unlocks world 2 immediately
-    profile.save()
+    session_id = request.GET.get('session_id')
+
+    if session_id:
+        try:
+            session = stripe.checkout.Session.retrieve(session_id)
+            if session.payment_status == 'paid':
+                profile, _ = UserProfile.objects.get_or_create(
+                    user=request.user
+                )
+                profile.is_premium = True
+                profile.worlds_unlocked = 2  # Premium unlocks world 2
+                profile.save()
+        except stripe.error.StripeError:
+            pass
+
     return render(request, 'payments/success.html')
 
 
@@ -50,6 +64,9 @@ def cancel_view(request):
 
 @csrf_exempt
 def webhook_view(request):
+    # No CSRF token here by design — this endpoint is called server-to-server
+    # by Stripe, not by a browser session. Security is provided instead by
+    # verifying the cryptographic signature below.
     payload = request.body
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
 

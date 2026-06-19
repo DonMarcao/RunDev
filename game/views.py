@@ -1,7 +1,6 @@
 import json
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from accounts.models import UserProfile
 from leaderboard.models import Score
@@ -49,8 +48,9 @@ def game_view(request):
 
 
 @login_required
-@csrf_exempt
 def submit_score(request):
+    # CSRF protection is active on this view — game.js sends the
+    # X-CSRFToken header on every fetch() call to this endpoint.
     if request.method == 'POST':
         data = json.loads(request.body)
         world = data.get('world', 'ocean')
@@ -66,9 +66,12 @@ def submit_score(request):
 
         # Unlock next world if premium
         profile = UserProfile.objects.get(user=request.user)
-        current_index = WORLD_ORDER.index(world) if world in WORLD_ORDER else 0
+        current_index = (
+            WORLD_ORDER.index(world) if world in WORLD_ORDER else 0
+        )
 
-        if profile.is_premium and profile.worlds_unlocked == current_index + 1:
+        if (profile.is_premium
+                and profile.worlds_unlocked == current_index + 1):
             profile.worlds_unlocked = current_index + 2
             profile.save()
 
