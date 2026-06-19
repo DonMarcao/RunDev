@@ -140,6 +140,20 @@ Issues found and fixed during validation:
 
 `static/css/style.css` validated via [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) — ✅ 0 errors.
 
+### JavaScript Code Quality (ESLint)
+
+`static/assets/game.js` validated using ESLint (flat config, `eslint.config.js`):
+
+```bash
+npx eslint static/assets/game.js
+```
+
+✅ 0 errors, 0 warnings.
+
+Configuration notes:
+- Browser/Phaser globals (`Phaser`, `window`, `fetch`, `setTimeout`, etc.) and the Django-template-injected variables (`IS_PREMIUM`, `CURRENT_WORLD`, `WORLD_OBS_*`, `FINISH_*`) are declared as globals to avoid false `no-undef` errors
+- `giveUp()` is explicitly allowed to appear "unused" within the file, since it is intentionally exposed globally and called via `onclick="giveUp()"` from `game.html`, not from within `game.js` itself
+
 ### Python Code Quality (PEP8)
 
 All Python files validated using `pycodestyle` (excluding `venv`, `migrations` and `staticfiles`):

@@ -553,6 +553,19 @@ MS4/
 
 **Comprehensive testing documentation:** [TESTING.md](TESTING.md)
 
+### Code Validation Summary
+
+Every language used in the project was validated with an appropriate tool:
+
+| Language | Tool | Result |
+|----------|------|--------|
+| HTML | [W3C Markup Validator](https://validator.w3.org/) | ✅ 0 errors (9 pages) |
+| CSS | [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) | ✅ 0 errors |
+| JavaScript | [ESLint](https://eslint.org/) | ✅ 0 errors, 0 warnings |
+| Python | [pycodestyle](https://pycodestyle.pycqa.org/) (PEP8) | ✅ 0 errors |
+
+Full validation details and screenshots in [TESTING.md](TESTING.md#code-validation).
+
 ### Automated Tests
 
 ```bash
