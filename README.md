@@ -547,6 +547,8 @@ MS4/
 | **docs** | Documentation | `docs: add testing documentation` |
 | **test** | Testing updates | `test: add automated tests for leaderboard app` |
 
+**Note on commit history:** a small number of commits in this repository are exact or near-duplicates (e.g. a commit re-run after the first attempt had no staged changes, or several incremental sprite-alignment fixes made while testing different scale values during solo development). These reflect the iterative, trial-and-error nature of working solo through visual/positioning bugs, rather than large, opaque commits — each individual change remains small, traceable and attributable to a specific fix.
+
 ---
 
 ## 🧪 Testing
@@ -577,8 +579,11 @@ python manage.py test
 | accounts | 8 | ✅ Pass |
 | game | 8 | ✅ Pass |
 | leaderboard | 9 | ✅ Pass |
-| payments | 6 | ✅ Pass |
-| **Total** | **31** | **✅ All passing** |
+| payments | 8 | ✅ Pass |
+| store | 4 | ✅ Pass |
+| **Total** | **37** | **✅ All passing** |
+
+**Note on testing approach:** tests in this project were written predominantly in a test-after style — functionality was implemented first, then covered with tests verifying its behaviour, rather than following strict Test-Driven Development (write a failing test, then implement). The exception is the Stripe payment security fix (see [Bugs Fixed During Development](TESTING.md#bugs-fixed-during-development)), where new tests were written specifically to define and verify the corrected, secure behaviour before considering the fix complete.
 
 ### W3C Validation
 
