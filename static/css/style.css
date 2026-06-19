@@ -26,3 +26,8 @@ a {
 a:hover {
     color: #ff9999;
 }
+
+.navbar-brand {
+    color: #ff6b6b !important;
+}
+ 
