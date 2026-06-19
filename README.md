@@ -208,7 +208,7 @@ The visual design uses the game background image as the primary design anchor �
 background: #212529;  /* Bootstrap dark */
 
 /* Game canvas */
-transparent: true;    /* Phaser canvas over animated GIF background */
+transparent: true;    /* Phaser canvas over looping WebM video background */
 
 /* Worlds */
 Web Ocean:      Deep blue ocean
@@ -259,7 +259,7 @@ Binary Matrix:  Matrix green on black
 - Automatic redirect to login for unauthenticated users
 
 #### 2. 🎮 Game — 4 Worlds
-- Phaser 4 game engine with transparent canvas over animated GIF backgrounds
+- Phaser 4 game engine with transparent canvas over looping WebM video backgrounds
 - Player moves with arrow keys across 8 vertical obstacle lanes
 - 2 obstacles per lane with alternating directions
 - Per-world sprite sets, player sprites, finish line markers and speed configuration
@@ -298,13 +298,15 @@ Binary Matrix:  Matrix green on black
 
 #### 7. 🎨 UI & UX
 - Full-screen background image across all Django pages
-- Animated GIF backgrounds per world in game canvas
+- Looping WebM video backgrounds per world in game canvas
 - Flash messages for auth actions
 - Bootstrap 5 responsive layout
 
 ### Known Issues
 
 - **Game Over / Level Complete overlap (rare)** — In rare cases, if the player crosses the finish line at the exact same frame an obstacle collision is detected, both the "Game Over" and "Level Complete" messages can render simultaneously. The win condition is checked before the collision check to minimise this, but the edge case can still occur under specific timing. This does not affect score submission or game functionality, and is difficult to reproduce intentionally. Flagged here for transparency rather than left undocumented.
+
+- **Background video distortion after GIF → WebM conversion (resolved)** — After converting the world backgrounds from GIF to WebM to reduce asset size, the videos appeared visibly squashed inside the game canvas, with empty space showing around the edges on all four worlds. Investigation with `ffprobe` showed the video files were encoded at the correct 960x540 pixel resolution, but carried an incorrect Sample Aspect Ratio (SAR) in their metadata (e.g. `1093:960` instead of `1:1`) — a side effect of the conversion process. This caused browsers to apply automatic letterboxing based on the (incorrect) stored aspect ratio rather than the actual pixel dimensions. Fixed by re-encoding all four background videos with `ffmpeg` using `-vf "setsar=1:1"` to force a 1:1 pixel aspect ratio, restoring the correct 16:9 display ratio with no visible quality loss or file size increase.
 
 ### Features Left to Implement
 
@@ -344,6 +346,7 @@ Binary Matrix:  Matrix green on black
 - **Heroku** — Cloud deployment
 - **ChatGPT / Gemini** — AI-generated game sprites
 - **remove.bg** — Background removal for sprites
+- **ffmpeg** — Video format conversion and aspect ratio correction
 - **W3C Validator** — HTML/CSS validation
 - **dbdiagram.io** — ERD creation
 
@@ -489,7 +492,7 @@ MS4/
 │   └── store/              # store.html
 ├── static/
 │   ├── assets/
-│   │   ├── background/     # Animated GIF backgrounds per world
+│   │   ├── background/     # Looping WebM video backgrounds per world
 │   │   ├── devs/           # Player sprites (oc_dev, cc_dev, cs_dev, bm_dev)
 │   │   ├── elements/       # Obstacle sprites per world (oc_, cc_, cs_, bm_)
 │   │   └── ui/             # bg_main.png global background
@@ -623,7 +626,7 @@ Screenshots: [Home Desktop](docs/lighthouse/home_desktop_lighthouse.png) | [Home
 **Game Sprites**
 - All game sprites (player characters, obstacles, finish line markers) generated using ChatGPT image generation
 - Background removal performed using remove.bg
-- Animated world backgrounds generated using Google Gemini
+- Animated world backgrounds generated using Google Gemini, converted from GIF to WebM video format using ffmpeg for performance optimisation
 
 ### Original Implementation
 

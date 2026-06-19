@@ -92,6 +92,7 @@ Tests were re-run after all leaderboard view changes (best-score-per-world annot
 | Stripe Checkout — success flow | Complete payment with test card | ✅ Pass — `success.html` shown, premium unlocked |
 | Desktop-only disclaimer | Visit home and game pages | ✅ Pass — disclaimer visible on both |
 | "Thanks for playing" banner | Complete Binary Matrix (final world) | ✅ Pass — banner shown on leaderboard with `?completed=true` |
+| Background video covers canvas correctly (all 4 worlds) | Visit `/game/` for each world, hard-clear browser cache, observe canvas edges | ✅ Pass — no letterboxing after SAR fix (see Bugs Fixed) |
 
 ---
 
@@ -132,7 +133,7 @@ All pages tested via [W3C Markup Validator](https://validator.w3.org/) using ren
 
 Issues found and fixed during validation:
 - Heading hierarchy errors (skipped levels, missing `<h1>`) corrected across `login.html`, `register.html`, `showroom.html`, `leaderboard.html`, `store.html`
-- Missing `alt` attribute added to background GIF image in `game.html`
+- Missing `aria-hidden` attribute added to background video element in `game.html` (the video is purely decorative, so it is hidden from assistive technology rather than given alt text)
 - `{{ form.as_p }}` replaced with `{{ form.as_div }}` in `register.html` to fix invalid nested `<ul>` inside `<p>` from Django's password help text
 
 ### CSS Validation
@@ -161,3 +162,6 @@ In rare cases, if the player crosses the finish line at the exact same frame an 
 | CSS button colors not changing despite `!important` | Bootstrap's own specificity and class structure conflicting with override attempts | Switched strategy — edited button classes directly in HTML templates instead of fighting Bootstrap via CSS |
 | `NameError: name 'completed' is not defined` | Context variable referenced before being defined in view | Added `completed = request.GET.get('completed', False)` before `render()` call |
 | `giveUp is not defined` | Browser cache serving stale `game.js` without the new function | Hard refresh (`Ctrl+Shift+R`); function also explicitly attached to `window` for robustness |
+| Text colour leaking onto buttons/elements inside tables | Generic `.table` selector in `style.css` forced `color: #ff6b6b !important`, which was inherited by child elements (buttons, badges) inside table cells | Removed `.table` from the generic text-colour selector, keeping the coral colour rule scoped to `td`/`th` text only |
+| Background videos appeared squashed in game canvas (letterboxing) after GIF → WebM conversion | `ffprobe` showed all 4 WebM files were correctly encoded at 960x540 pixels but carried an incorrect Sample Aspect Ratio (SAR) in their metadata (e.g. `1093:960` instead of `1:1`), causing browsers to apply automatic letterboxing based on the stored aspect ratio rather than actual pixel size | Re-encoded all 4 background videos with `ffmpeg -vf "setsar=1:1"` to force a 1:1 pixel aspect ratio, restoring the correct 16:9 display ratio |
+| Fixed background video appeared unchanged after deploy despite correct file on Heroku | Browser was serving the cached (pre-fix) video file from its local media cache; a hard refresh (`Ctrl+Shift+R`) reloads HTML/CSS/JS but does not reliably bust cached `<video>` sources | Verified fix by testing in a private/incognito window (no cache) and by manually clearing cached images/files via browser settings |
