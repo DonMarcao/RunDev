@@ -187,28 +187,28 @@ The game requires keyboard input (arrow keys) which makes it desktop-only by des
 Wireframes produced before development as part of the UX planning phase.
 
 #### Home
-![Wireframe Home](docs/wireframes/01_home.png)
+![Wireframe Home](docs/wireframes/home_wireframe.png)
 
 #### Login
-![Wireframe Login](docs/wireframes/02_login.png)
+![Wireframe Login](docs/wireframes/login_wireframe.png)
 
 #### Register
-![Wireframe Register](docs/wireframes/03_register.png)
+![Wireframe Register](docs/wireframes/register_wireframe.png)
 
 #### Game
-![Wireframe Game](docs/wireframes/04_game.png)
+![Wireframe Game](docs/wireframes/game_wireframe.png)
 
 #### Showroom
-![Wireframe Showroom](docs/wireframes/05_showroom.png)
+![Wireframe Showroom](docs/wireframes/showroom_wireframe.png)
 
 #### Leaderboard
-![Wireframe Leaderboard](docs/wireframes/06_leaderboard.png)
+![Wireframe Leaderboard](docs/wireframes/leaderboard_wireframe.png)
 
 #### Store
-![Wireframe Store](docs/wireframes/07_store.png)
+![Wireframe Store](docs/wireframes/store_wireframe.png)
 
 #### Checkout
-![Wireframe Checkout](docs/wireframes/08_checkout.png)
+![Wireframe Checkout](docs/wireframes/checkout_wireframe.png)
 
 ---
 
@@ -565,6 +565,8 @@ Every language used in the project was validated with an appropriate tool:
 | CSS | [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) | ✅ 0 errors |
 | JavaScript | [ESLint](https://eslint.org/) | ✅ 0 errors, 0 warnings |
 | Python | [pycodestyle](https://pycodestyle.pycqa.org/) (PEP8) | ✅ 0 errors |
+
+![PEP8 Validation](docs/testing/pep8_validator.png)
 
 Full validation details and screenshots in [TESTING.md](TESTING.md#code-validation).
 

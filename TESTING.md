@@ -156,19 +156,22 @@ Configuration notes:
 
 ### Python Code Quality (PEP8)
 
-All Python files validated using `pycodestyle` (excluding `venv`, `migrations` and `staticfiles`):
+All Python files validated using `pycodestyle` (excluding `venv`, `migrations`, `staticfiles` and `node_modules`):
 
 ```bash
-pycodestyle --exclude=venv,migrations,staticfiles .
+pycodestyle --exclude=venv,migrations,staticfiles,node_modules .
 ```
 
 ✅ 0 errors after fixes.
+
+![PEP8 Validation](docs/testing/pep8_validator.png)
 
 Issues found and fixed:
 - Missing newline at end of file (`W292`) — present in nearly every app file, fixed in bulk
 - Lines exceeding 79 characters (`E501`) — fixed in `accounts/models.py`, `payments/models.py` and `rundev/settings.py` by extracting intermediate variables (e.g. `status`) or wrapping long string concatenations across multiple lines
 - Missing 2 blank lines before a function definition (`E302`) — fixed in `payments/views.py`
 - Missing whitespace after `:` and trailing whitespace (`E231`, `W291`) — introduced by editor autoformatting while wrapping `AUTH_PASSWORD_VALIDATORS` entries in `rundev/settings.py`, fixed by rewriting the block manually
+- Blank line at end of file (`W391`) — `game/admin.py` (intentionally empty, no models to register in this app) had a trailing blank line; fixed by clearing the file to exactly 0 bytes
 
 ---
 
